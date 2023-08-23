@@ -12,38 +12,30 @@ namespace DDD.Infra.MemoryDb.Repositories
     public class AlunoRepository : IAlunoRepository
     {
 
-        public AlunoRepository()
+        private readonly ApiContext _context;
+
+        public AlunoRepository(ApiContext context)
         {
-            using (var context = new ApiContext())
+            _context = context;
+        }
+       
+        public void DeleteAluno(Aluno aluno)
+        {
+            try
             {
-                var alunos = new List<Aluno>
-                {
-                new Aluno
-                {
-                    Nome ="Asdrubal",
-                    Sobrenome ="Implementor",
-                       Disciplinas = new List<Disciplina>()
-                    {
-                        new Disciplina { Nome = "Mastering C#"},
-                        new Disciplina { Nome = "Entity Framework Tutorial"},
-                        new Disciplina { Nome = "Programming is nice"}
-                    }
-                },
-                new Aluno
-                {
-                    Nome ="Jao",
-                    Sobrenome ="das neves",
-                    Disciplinas = new List<Disciplina>()
-                    {
-                        new Disciplina { Nome = "Bora de C#"},
-                        new Disciplina { Nome = "Bora de C++"},
-                        new Disciplina { Nome = "Bora de Java :("}
-                    }
-                }
-                };
-                context.Alunos.AddRange(alunos);
-                context.SaveChanges();
+                _context.Set<Aluno>().Remove(aluno);
+                _context.SaveChanges();
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public Aluno GetAlunoById(int id)
+        {
+            return _context.Alunos.Find(id);
         }
 
         public List<Aluno> GetAlunos()
@@ -52,6 +44,35 @@ namespace DDD.Infra.MemoryDb.Repositories
             {
                 var list = context.Alunos.Include(x => x.Disciplinas).ToList();
                 return list;
+            }
+        }
+
+        public void InsertAluno(Aluno aluno)
+        {
+            try
+            {
+                _context.Alunos.Add(aluno);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                //log exception
+
+            }
+        }
+
+        public void UpdateAluno(Aluno aluno)
+        {
+            try
+            {
+                _context.Entry(aluno).State = EntityState.Modified;
+                _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
     }
