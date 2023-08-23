@@ -1,3 +1,4 @@
+using DDD.Infra.MemoryDb;
 using DDD.Infra.MemoryDb.Interfaces;
 using DDD.Infra.MemoryDb.Repositories;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //IOC - Dependency Injection
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
+builder.Services.AddScoped<ApiContext, ApiContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
