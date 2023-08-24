@@ -13,6 +13,7 @@ namespace DDD.Domain
         public int Id { get; set; }
         [Required]
         public string Nome { get; set; }
+        [Required]
         public string Sobrenome { get; set; }
 
         [NotMapped]
