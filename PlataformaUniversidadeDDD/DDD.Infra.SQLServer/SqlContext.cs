@@ -1,4 +1,4 @@
-﻿using DDD.Domain;
+using DDD.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDD.Infra.SQLServer
@@ -11,7 +11,7 @@ namespace DDD.Infra.SQLServer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost,1233; Initial Catalog=UniversidadeDb; User Id=user; Password=test123");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=UniversidadeDb");
         }
 
         public DbSet<Aluno> Alunos { get; set; }
