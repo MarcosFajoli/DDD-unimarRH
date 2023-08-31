@@ -17,5 +17,7 @@ namespace DDD.Domain
         public bool Disponivel { get; set; }
         public bool Ead { get; set; }
 
+        public IList<Matricula> Matriculas { get; set; }
+
     }
 }

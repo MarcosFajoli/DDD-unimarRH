@@ -24,11 +24,11 @@ namespace DDD.Infra.SQLServer.Migrations
 
             modelBuilder.Entity("DDD.Domain.Aluno", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AlunoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlunoId"));
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -38,7 +38,7 @@ namespace DDD.Infra.SQLServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("AlunoId");
 
                     b.ToTable("Alunos");
                 });
@@ -50,9 +50,6 @@ namespace DDD.Infra.SQLServer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DisciplinaId"));
-
-                    b.Property<int?>("AlunoId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Disponivel")
                         .HasColumnType("bit");
@@ -69,21 +66,57 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasKey("DisciplinaId");
 
-                    b.HasIndex("AlunoId");
-
                     b.ToTable("Disciplinas");
                 });
 
-            modelBuilder.Entity("DDD.Domain.Disciplina", b =>
+            modelBuilder.Entity("DDD.Domain.Matricula", b =>
                 {
-                    b.HasOne("DDD.Domain.Aluno", null)
-                        .WithMany("Disciplinas")
-                        .HasForeignKey("AlunoId");
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DisciplinaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MatriculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlunoId", "DisciplinaId");
+
+                    b.HasIndex("DisciplinaId");
+
+                    b.ToTable("Matriculas");
+                });
+
+            modelBuilder.Entity("DDD.Domain.Matricula", b =>
+                {
+                    b.HasOne("DDD.Domain.Aluno", "Aluno")
+                        .WithMany("Matriculas")
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDD.Domain.Disciplina", "Disciplina")
+                        .WithMany("Matriculas")
+                        .HasForeignKey("DisciplinaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+
+                    b.Navigation("Disciplina");
                 });
 
             modelBuilder.Entity("DDD.Domain.Aluno", b =>
                 {
-                    b.Navigation("Disciplinas");
+                    b.Navigation("Matriculas");
+                });
+
+            modelBuilder.Entity("DDD.Domain.Disciplina", b =>
+                {
+                    b.Navigation("Matriculas");
                 });
 #pragma warning restore 612, 618
         }

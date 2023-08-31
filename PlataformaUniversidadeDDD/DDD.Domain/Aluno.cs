@@ -10,7 +10,7 @@ namespace DDD.Domain
 {
     public class Aluno
     {
-        public int Id { get; set; }
+        public int AlunoId { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
 
@@ -23,7 +23,9 @@ namespace DDD.Domain
         [NotMapped]
         public bool Ativo { get; set; }
 
-        public List<Disciplina> Disciplinas { get; set; }
+        //public List<Disciplina> Disciplinas { get; set; }
+        public IList<Matricula> Matriculas { get; set; }
+
 
     }
 }

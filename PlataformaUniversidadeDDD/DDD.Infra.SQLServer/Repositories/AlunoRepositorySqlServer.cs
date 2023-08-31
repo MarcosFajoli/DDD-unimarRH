@@ -40,8 +40,9 @@ namespace DDD.Infra.SQLServer.Repositories
 
         public List<Aluno> GetAlunos()
         {
-            return  _context.Alunos.Include(x => x.Disciplinas).ToList();
-            
+            //return  _context.Alunos.Include(x => x.Disciplinas).ToList();
+            return _context.Alunos.ToList();
+
         }
 
         public void InsertAluno(Aluno aluno)

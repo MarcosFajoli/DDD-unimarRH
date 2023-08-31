@@ -42,7 +42,7 @@ namespace DDD.Infra.MemoryDb.Repositories
         {
             using (var context = new ApiContext())
             {
-                var list = context.Alunos.Include(x => x.Disciplinas).ToList();
+                var list = context.Alunos.ToList();
                 return list;
             }
         }
