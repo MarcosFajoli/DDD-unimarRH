@@ -1,6 +1,5 @@
 using DDD.Domain;
-using DDD.Infra.MemoryDb.Interfaces;
-using DDD.Infra.SQLServer;
+using DDD.Infra.SQLServer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Infra.MemoryDb.Repositories
+namespace DDD.Infra.SQLServer.Repositories
 {
     public class AlunoRepositorySqlServer : IAlunoRepository
     {
@@ -19,7 +18,7 @@ namespace DDD.Infra.MemoryDb.Repositories
         {
             _context = context;
         }
-       
+
         public void DeleteAluno(Aluno aluno)
         {
             try
@@ -41,8 +40,7 @@ namespace DDD.Infra.MemoryDb.Repositories
 
         public List<Aluno> GetAlunos()
         {
-            
-            return _context.Alunos.Include(x => x.Disciplinas).ToList();
+            return  _context.Alunos.Include(x => x.Disciplinas).ToList();
             
         }
 
