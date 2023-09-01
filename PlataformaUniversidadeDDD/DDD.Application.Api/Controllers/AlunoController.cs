@@ -1,4 +1,4 @@
-using DDD.Domain;
+using DDD.Domain.SecretariaContext;
 using DDD.Infra.MemoryDb.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

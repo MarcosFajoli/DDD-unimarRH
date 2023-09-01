@@ -22,28 +22,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DDD.Domain.Aluno", b =>
-                {
-                    b.Property<int>("AlunoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlunoId"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sobrenome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AlunoId");
-
-                    b.ToTable("Alunos");
-                });
-
-            modelBuilder.Entity("DDD.Domain.Disciplina", b =>
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
                 {
                     b.Property<int>("DisciplinaId")
                         .ValueGeneratedOnAdd()
@@ -69,7 +48,7 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.ToTable("Disciplinas");
                 });
 
-            modelBuilder.Entity("DDD.Domain.Matricula", b =>
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
                 {
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
@@ -80,9 +59,6 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MatriculaId")
-                        .HasColumnType("int");
-
                     b.HasKey("AlunoId", "DisciplinaId");
 
                     b.HasIndex("DisciplinaId");
@@ -90,15 +66,72 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.ToTable("Matriculas");
                 });
 
-            modelBuilder.Entity("DDD.Domain.Matricula", b =>
+            modelBuilder.Entity("DDD.Domain.UserManagementContext.User", b =>
                 {
-                    b.HasOne("DDD.Domain.Aluno", "Aluno")
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sobrenome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Aluno", b =>
+                {
+                    b.HasBaseType("DDD.Domain.UserManagementContext.User");
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.HasDiscriminator().HasValue("Aluno");
+                });
+
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
+                {
+                    b.HasOne("DDD.Domain.SecretariaContext.Aluno", "Aluno")
                         .WithMany("Matriculas")
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DDD.Domain.Disciplina", "Disciplina")
+                    b.HasOne("DDD.Domain.SecretariaContext.Disciplina", "Disciplina")
                         .WithMany("Matriculas")
                         .HasForeignKey("DisciplinaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -109,12 +142,12 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Navigation("Disciplina");
                 });
 
-            modelBuilder.Entity("DDD.Domain.Aluno", b =>
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
                 {
                     b.Navigation("Matriculas");
                 });
 
-            modelBuilder.Entity("DDD.Domain.Disciplina", b =>
+            modelBuilder.Entity("DDD.Domain.SecretariaContext.Aluno", b =>
                 {
                     b.Navigation("Matriculas");
                 });

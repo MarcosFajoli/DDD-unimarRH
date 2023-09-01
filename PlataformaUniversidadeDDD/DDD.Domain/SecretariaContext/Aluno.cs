@@ -1,3 +1,4 @@
+using DDD.Domain.UserManagementContext;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,21 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Domain
+namespace DDD.Domain.SecretariaContext
 {
-    public class Aluno
+    public class Aluno : User
     {
         public int AlunoId { get; set; }
-        public string Nome { get; set; }
-        public string Sobrenome { get; set; }
-
-        [NotMapped]
-        public string Email { get; set; }
-
-        [NotMapped]
+     
         public DateTime DataCadastro { get; set; }
 
-        [NotMapped]
         public bool Ativo { get; set; }
 
         //public List<Disciplina> Disciplinas { get; set; }

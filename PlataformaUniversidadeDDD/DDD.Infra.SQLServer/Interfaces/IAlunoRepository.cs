@@ -1,4 +1,4 @@
-using DDD.Domain;
+using DDD.Domain.SecretariaContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;

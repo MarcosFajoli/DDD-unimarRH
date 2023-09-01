@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Domain
+namespace DDD.Domain.SecretariaContext
 {
     public class Disciplina
     {

@@ -1,4 +1,5 @@
-using DDD.Domain;
+using DDD.Domain.SecretariaContext;
+using DDD.Domain.UserManagementContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDD.Infra.SQLServer
@@ -22,5 +23,6 @@ namespace DDD.Infra.SQLServer
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Disciplina> Disciplinas { get; set; }
         public DbSet<Matricula> Matriculas { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
