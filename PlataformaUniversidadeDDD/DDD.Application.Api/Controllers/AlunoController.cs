@@ -1,5 +1,5 @@
 using DDD.Domain;
-using DDD.Infra.MemoryDb.Interfaces;
+using DDD.Infra.SqlServer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
