@@ -11,8 +11,6 @@ namespace DDD.Domain.SecretariaContext
 {
     public class Aluno : User
     {
-        public int AlunoId { get; set; }
-     
         public DateTime DataCadastro { get; set; }
 
         public bool Ativo { get; set; }

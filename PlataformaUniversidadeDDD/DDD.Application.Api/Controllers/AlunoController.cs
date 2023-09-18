@@ -39,7 +39,7 @@ namespace DDD.Application.Api.Controllers
                 return BadRequest("Nome deve ser maior que 3 e menor que 30 caracteres.");
             }
             _alunoRepository.InsertAluno(aluno);
-            return CreatedAtAction(nameof(GetById), new { id = aluno.AlunoId }, aluno);
+            return CreatedAtAction(nameof(GetById), new { id = aluno.UserId }, aluno);
         }
 
         [HttpPut]

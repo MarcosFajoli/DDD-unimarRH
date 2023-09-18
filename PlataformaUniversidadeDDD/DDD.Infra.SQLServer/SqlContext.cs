@@ -1,3 +1,4 @@
+using DDD.Domain.PicContext;
 using DDD.Domain.SecretariaContext;
 using DDD.Domain.UserManagementContext;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,18 @@ namespace DDD.Infra.SQLServer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Matricula>().HasKey(m => new { m.AlunoId, m.DisciplinaId });
+
+            modelBuilder.Entity<User>().UseTpcMappingStrategy();
+            modelBuilder.Entity<Aluno>().ToTable("Aluno");
+            modelBuilder.Entity<Pesquisador>().ToTable("Pesquisador");
+            //https://learn.microsoft.com/pt-br/ef/core/modeling/inheritance
         }
 
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Disciplina> Disciplinas { get; set; }
         public DbSet<Matricula> Matriculas { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Pesquisador> Pesquisadores { get; set; }
+        public DbSet<Projeto> Projetos { get; set; }
     }
 }

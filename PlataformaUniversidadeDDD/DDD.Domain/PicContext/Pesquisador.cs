@@ -9,6 +9,7 @@ namespace DDD.Domain.PicContext
 {
     public  class Pesquisador : User
     {
+        public string Titulacao { get; set; }
         public List<Projeto> Projetos { get; set; }
     }
 }

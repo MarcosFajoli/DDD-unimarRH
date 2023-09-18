@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DDD.Domain.UserManagementContext
 {
-    public class User
+    public abstract class User
     {
         public int UserId { get; set; }
         public string Nome { get; set; }

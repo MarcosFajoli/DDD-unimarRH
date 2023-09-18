@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230901204630_CriacaoInicial5_BoundedContexts")]
-    partial class CriacaoInicial5_BoundedContexts
+    [Migration("20230918184311_TPC_Strategy")]
+    partial class TPC_Strategy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,37 @@ namespace DDD.Infra.SQLServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.HasSequence("UserSequence");
+
+            modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
+                {
+                    b.Property<int>("ProjetoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjetoId"));
+
+                    b.Property<int>("AnosDuracao")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PesquisadorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjetoDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjetoName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProjetoId");
+
+                    b.HasIndex("PesquisadorUserId");
+
+                    b.ToTable("Projetos");
+                });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
                 {
@@ -62,6 +93,9 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MatriculaId")
+                        .HasColumnType("int");
+
                     b.HasKey("AlunoId", "DisciplinaId");
 
                     b.HasIndex("DisciplinaId");
@@ -73,13 +107,10 @@ namespace DDD.Infra.SQLServer.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [UserSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("UserId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -103,19 +134,25 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable((string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                    b.UseTpcMappingStrategy();
+                });
 
-                    b.UseTphMappingStrategy();
+            modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>
+                {
+                    b.HasBaseType("DDD.Domain.UserManagementContext.User");
+
+                    b.Property<string>("Titulacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Pesquisador", (string)null);
                 });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Aluno", b =>
                 {
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
-
-                    b.Property<int>("AlunoId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
@@ -123,7 +160,14 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue("Aluno");
+                    b.ToTable("Aluno", (string)null);
+                });
+
+            modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
+                {
+                    b.HasOne("DDD.Domain.PicContext.Pesquisador", null)
+                        .WithMany("Projetos")
+                        .HasForeignKey("PesquisadorUserId");
                 });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
@@ -148,6 +192,11 @@ namespace DDD.Infra.SQLServer.Migrations
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
                 {
                     b.Navigation("Matriculas");
+                });
+
+            modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>
+                {
+                    b.Navigation("Projetos");
                 });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Aluno", b =>
