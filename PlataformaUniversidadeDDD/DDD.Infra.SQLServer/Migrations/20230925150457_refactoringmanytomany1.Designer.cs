@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230918184311_TPC_Strategy")]
-    partial class TPC_Strategy
+    [Migration("20230925150457_refactoringmanytomany1")]
+    partial class refactoringmanytomany1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,19 +84,24 @@ namespace DDD.Infra.SQLServer.Migrations
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
                 {
-                    b.Property<int>("AlunoId")
+                    b.Property<int>("MatriculaId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("DisciplinaId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MatriculaId"));
+
+                    b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MatriculaId")
+                    b.Property<int>("DisciplinaId")
                         .HasColumnType("int");
 
-                    b.HasKey("AlunoId", "DisciplinaId");
+                    b.HasKey("MatriculaId");
+
+                    b.HasIndex("AlunoId");
 
                     b.HasIndex("DisciplinaId");
 
@@ -111,6 +116,12 @@ namespace DDD.Infra.SQLServer.Migrations
                         .HasDefaultValueSql("NEXT VALUE FOR [UserSequence]");
 
                     SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("UserId"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -154,12 +165,6 @@ namespace DDD.Infra.SQLServer.Migrations
                 {
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("datetime2");
-
                     b.ToTable("Aluno", (string)null);
                 });
 
@@ -173,13 +178,13 @@ namespace DDD.Infra.SQLServer.Migrations
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
                 {
                     b.HasOne("DDD.Domain.SecretariaContext.Aluno", "Aluno")
-                        .WithMany("Matriculas")
+                        .WithMany()
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DDD.Domain.SecretariaContext.Disciplina", "Disciplina")
-                        .WithMany("Matriculas")
+                        .WithMany()
                         .HasForeignKey("DisciplinaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -189,19 +194,9 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Navigation("Disciplina");
                 });
 
-            modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
-                {
-                    b.Navigation("Matriculas");
-                });
-
             modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>
                 {
                     b.Navigation("Projetos");
-                });
-
-            modelBuilder.Entity("DDD.Domain.SecretariaContext.Aluno", b =>
-                {
-                    b.Navigation("Matriculas");
                 });
 #pragma warning restore 612, 618
         }

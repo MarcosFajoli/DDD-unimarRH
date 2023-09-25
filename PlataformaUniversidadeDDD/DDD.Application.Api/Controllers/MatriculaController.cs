@@ -16,30 +16,26 @@ namespace DDD.Application.Api.Controllers
             _matriculaRepository = matriculaRepository; 
         }
 
-        //[HttpGet]
-        //public ActionResult<List<Matricula>> Get()
-        //{
-        //    return Ok(_alunoRepository.GetAlunos());
-        //}
+        [HttpGet]
+        public ActionResult<List<Matricula>> Get()
+        {
+            return Ok(_matriculaRepository.GetMatriculas());
+        }
 
-        //[HttpGet("{id}")]
-        //public ActionResult<Aluno> GetById(int id)
-        //{
-        //    return Ok(_alunoRepository.GetAlunoById(id));
-        //}
+        [HttpGet("{id}")]
+        public ActionResult<Aluno> GetById(int id)
+        {
+            return Ok(_matriculaRepository.GetMatriculaById(id));
+        }
 
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status201Created)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public ActionResult<Aluno> CreateAluno(Aluno aluno)
-        //{
-        //    if (aluno.Nome.Length < 3 || aluno.Nome.Length > 30)
-        //    {
-        //        return BadRequest("Nome deve ser maior que 3 e menor que 30 caracteres.");
-        //    }
-        //    _alunoRepository.InsertAluno(aluno);
-        //    return CreatedAtAction(nameof(GetById), new { id = aluno.UserId }, aluno);
-        //}
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Matricula> CreateMatricula(int idAluno, int idDisciplina)
+        {
+            Matricula matriculaIdSaved = _matriculaRepository.InsertMatricula(idAluno, idDisciplina);
+            return CreatedAtAction(nameof(GetById), new { id = matriculaIdSaved.MatriculaId }, matriculaIdSaved);
+        }
 
         //[HttpPut]
         //public ActionResult Put([FromBody] Aluno aluno)

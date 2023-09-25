@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DDD.Infra.SQLServer.Migrations
 {
     /// <inheritdoc />
-    public partial class TPC_Strategy : Migration
+    public partial class refactoringmanytomany1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,6 +58,8 @@ namespace DDD.Infra.SQLServer.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
                     Titulacao = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -69,14 +71,15 @@ namespace DDD.Infra.SQLServer.Migrations
                 name: "Matriculas",
                 columns: table => new
                 {
+                    MatriculaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AlunoId = table.Column<int>(type: "int", nullable: false),
                     DisciplinaId = table.Column<int>(type: "int", nullable: false),
-                    MatriculaId = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Matriculas", x => new { x.AlunoId, x.DisciplinaId });
+                    table.PrimaryKey("PK_Matriculas", x => x.MatriculaId);
                     table.ForeignKey(
                         name: "FK_Matriculas_Aluno_AlunoId",
                         column: x => x.AlunoId,
@@ -111,6 +114,11 @@ namespace DDD.Infra.SQLServer.Migrations
                         principalTable: "Pesquisador",
                         principalColumn: "UserId");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matriculas_AlunoId",
+                table: "Matriculas",
+                column: "AlunoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Matriculas_DisciplinaId",

@@ -16,8 +16,8 @@ namespace DDD.Domain.SecretariaContext
         public decimal Valor { get; set; }
         public bool Disponivel { get; set; }
         public bool Ead { get; set; }
-
-        public IList<Matricula> Matriculas { get; set; }
+        //public IList<Matricula>? Matriculas { get; set; }
+        public IList<Aluno>? Alunos { get; set; }
 
     }
 }
