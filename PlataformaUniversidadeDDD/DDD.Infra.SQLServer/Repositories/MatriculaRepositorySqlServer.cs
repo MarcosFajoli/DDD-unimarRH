@@ -33,9 +33,19 @@ namespace DDD.Infra.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
-        public void InsertMatricula(Matricula matricula)
+        public void InsertMatricula(int idAluno, int idDisciplina)
         {
-            throw new NotImplementedException();
+            var aluno = _context.Alunos .First(i => i.UserId == idAluno);
+            var disciplina = _context.Disciplinas.First(i => i.DisciplinaId == idDisciplina);
+
+            var matricula = new Matricula
+            {
+                Aluno = aluno,
+                Disciplina = disciplina
+            };
+
+            _context.Add(matricula);
+            _context.SaveChanges();
         }
 
         public void UpdateMatricula(Matricula matricula)

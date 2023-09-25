@@ -11,7 +11,8 @@ namespace DDD.Infra.SQLServer.Interfaces
     {
         public List<Matricula> GetMatriculas();
         public Matricula GetMatriculaById(int id);
-        public void InsertMatricula(Matricula matricula);
+        //public void InsertMatricula(Matricula matricula);
+        public void InsertMatricula(int idAluno, int idDisciplina);
         public void UpdateMatricula(Matricula matricula);
         public void DeleteMatricula(Matricula matricula);
     }
