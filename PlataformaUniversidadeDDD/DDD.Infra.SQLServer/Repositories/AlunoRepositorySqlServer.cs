@@ -1,5 +1,5 @@
 using DDD.Domain.SecretariaContext;
-using DDD.Infra.MemoryDb.Interfaces;
+using DDD.Infra.SQLServer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,18 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Infra.MemoryDb.Repositories
+namespace DDD.Infra.SQLServer.Repositories
 {
-    public class AlunoRepository : IAlunoRepository
+    public class AlunoRepositorySqlServer : IAlunoRepository
     {
 
-        private readonly ApiContext _context;
+        private readonly SqlContext _context;
 
-        public AlunoRepository(ApiContext context)
+        public AlunoRepositorySqlServer(SqlContext context)
         {
             _context = context;
         }
-       
+
         public void DeleteAluno(Aluno aluno)
         {
             try
@@ -40,11 +40,9 @@ namespace DDD.Infra.MemoryDb.Repositories
 
         public List<Aluno> GetAlunos()
         {
-            using (var context = new ApiContext())
-            {
-                var list = context.Alunos.ToList();
-                return list;
-            }
+            //return  _context.Alunos.Include(x => x.Disciplinas).ToList();
+            return _context.Alunos.ToList();
+
         }
 
         public void InsertAluno(Aluno aluno)

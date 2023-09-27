@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Infra.MemoryDb.Interfaces
+namespace DDD.Infra.SQLServer.Interfaces
 {
     public interface IAlunoRepository
     {

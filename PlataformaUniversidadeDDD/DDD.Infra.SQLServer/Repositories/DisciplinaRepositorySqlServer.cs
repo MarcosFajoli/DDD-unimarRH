@@ -1,5 +1,5 @@
 using DDD.Domain.SecretariaContext;
-using DDD.Infra.MemoryDb.Interfaces;
+using DDD.Infra.SQLServer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,23 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Infra.MemoryDb.Repositories
+namespace DDD.Infra.SQLServer.Repositories
 {
-    public class AlunoRepository : IAlunoRepository
+    public class DisciplinaRepositorySqlServer : IDisciplinaRepository
     {
+        private readonly SqlContext _context;
 
-        private readonly ApiContext _context;
-
-        public AlunoRepository(ApiContext context)
+        public DisciplinaRepositorySqlServer(SqlContext context)
         {
             _context = context;
         }
-       
-        public void DeleteAluno(Aluno aluno)
+
+
+        public void DeleteDisciplina(Disciplina disciplina)
         {
             try
             {
-                _context.Set<Aluno>().Remove(aluno);
+                _context.Set<Disciplina>().Remove(disciplina);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -33,25 +33,21 @@ namespace DDD.Infra.MemoryDb.Repositories
             }
         }
 
-        public Aluno GetAlunoById(int id)
+        public List<Disciplina> GetDisciplinas()
         {
-            return _context.Alunos.Find(id);
+            return _context.Disciplinas.ToList();
         }
 
-        public List<Aluno> GetAlunos()
+        public Disciplina GetDisciplinaById(int id)
         {
-            using (var context = new ApiContext())
-            {
-                var list = context.Alunos.ToList();
-                return list;
-            }
+            return _context.Disciplinas.Find(id);
         }
 
-        public void InsertAluno(Aluno aluno)
+        public void InsertDisciplina(Disciplina disciplina)
         {
             try
             {
-                _context.Alunos.Add(aluno);
+                _context.Disciplinas.Add(disciplina);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -61,11 +57,11 @@ namespace DDD.Infra.MemoryDb.Repositories
             }
         }
 
-        public void UpdateAluno(Aluno aluno)
+        public void UpdateDisciplina(Disciplina disciplina)
         {
             try
             {
-                _context.Entry(aluno).State = EntityState.Modified;
+                _context.Entry(disciplina).State = EntityState.Modified;
                 _context.SaveChanges();
 
             }

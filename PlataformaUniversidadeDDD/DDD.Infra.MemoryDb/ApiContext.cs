@@ -1,4 +1,4 @@
-using DDD.Domain;
+using DDD.Domain.SecretariaContext;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
