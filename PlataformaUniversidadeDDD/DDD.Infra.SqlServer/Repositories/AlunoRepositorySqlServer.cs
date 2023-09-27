@@ -1,5 +1,5 @@
-using DDD.Domain;
-using DDD.Infra.SqlServer.Interfaces;
+using DDD.Domain.SecretariaContext;
+using DDD.Infra.SQLServer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DDD.Infra.SqlServer.Repositories
+namespace DDD.Infra.SQLServer.Repositories
 {
     public class AlunoRepositorySqlServer : IAlunoRepository
     {
@@ -40,9 +40,8 @@ namespace DDD.Infra.SqlServer.Repositories
 
         public List<Aluno> GetAlunos()
         {
-
-            var list = _context.Alunos.Include(x => x.Disciplinas).ToList();
-            return list;
+            //return  _context.Alunos.Include(x => x.Disciplinas).ToList();
+            return _context.Alunos.ToList();
 
         }
 
