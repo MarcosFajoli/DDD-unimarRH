@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230925150457_refactoringmanytomany1")]
-    partial class refactoringmanytomany1
+    [Migration("20230927185039_matriculaPkUnica")]
+    partial class matriculaPkUnica
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

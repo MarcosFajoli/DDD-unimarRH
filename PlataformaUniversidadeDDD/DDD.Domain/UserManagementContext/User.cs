@@ -10,7 +10,6 @@ namespace DDD.Domain.UserManagementContext
     {
         public int UserId { get; set; }
         public string Nome { get; set; }
-        [Required]
         public string Sobrenome { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }
