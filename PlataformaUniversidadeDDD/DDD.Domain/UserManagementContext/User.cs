@@ -15,6 +15,8 @@ namespace DDD.Domain.UserManagementContext
         public string Login { get; set; }
         public string Senha { get; set; }
         public DateTime DataCadastro { get; set; }
+        public DateTime DataNasc { get; set; }
+
         public bool Ativo { get; set; }
     }
 }
