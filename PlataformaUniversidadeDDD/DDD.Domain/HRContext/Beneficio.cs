@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace DDD.Domain.HRContext
 {
-    public class Beneficios
+    public class Beneficio
     {
+        public int BeneficioId { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
     }
