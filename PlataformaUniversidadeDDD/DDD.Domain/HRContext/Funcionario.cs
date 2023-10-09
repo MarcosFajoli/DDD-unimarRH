@@ -15,6 +15,5 @@ namespace DDD.Domain.HRContext
         public int MinutosExtras { get; set; }
         public int CargoId { get; set; }
         public Cargo Cargo { get; set; }
-        public List<Beneficio> Beneficios { get; set; }
     }
 }
