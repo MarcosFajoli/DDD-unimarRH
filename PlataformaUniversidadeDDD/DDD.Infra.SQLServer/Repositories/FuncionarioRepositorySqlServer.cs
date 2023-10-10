@@ -1,5 +1,7 @@
 ﻿using DDD.Domain.HRContext;
+using DDD.Domain.SecretariaContext;
 using DDD.Infra.SQLServer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +21,51 @@ namespace DDD.Infra.SQLServer.Repositories
 
         public void DeleteFuncionario(Funcionario funcionario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<Funcionario>().Remove(funcionario);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Funcionario GetFuncionarioById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Funcionarios.Find(id);
         }
 
         public List<Funcionario> GetFuncionarios()
         {
-            throw new NotImplementedException();
+            return _context.Funcionarios.ToList();
         }
 
         public void InsertFuncionario(Funcionario funcionario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Funcionarios.Add(funcionario);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void UpdateFuncionario(Funcionario funcionario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Entry(funcionario).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

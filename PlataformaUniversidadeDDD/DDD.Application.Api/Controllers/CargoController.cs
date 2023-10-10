@@ -27,5 +27,49 @@ namespace DDD.Application.Api.Controllers
         {
             return Ok(_cargoRepository.GetCargoById(id));
         }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Cargo> CreateAluno(Cargo cargo)
+        {
+            _cargoRepository.InsertCargo(cargo);
+            return CreatedAtAction(nameof(GetById), new { id = cargo.CargoId }, cargo);
+        }
+
+        [HttpPut]
+        public ActionResult Put([FromBody] Cargo cargo)
+        {
+            try
+            {
+                if (cargo == null)
+                    return NotFound();
+
+                _cargoRepository.UpdateCargo(cargo);
+                return Ok("Cargo atualizado.");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpDelete()]
+        public ActionResult Delete([FromBody] Cargo cargo)
+        {
+            try
+            {
+                if (cargo == null)
+                    return NotFound();
+
+                _cargoRepository.DeleteCargo(cargo);
+                return Ok("Cargo removido.");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

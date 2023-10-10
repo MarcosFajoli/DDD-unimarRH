@@ -1,5 +1,6 @@
 ﻿using DDD.Domain.HRContext;
 using DDD.Infra.SQLServer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +20,51 @@ namespace DDD.Infra.SQLServer.Repositories
 
         public void DeleteCargo(Cargo cargo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<Cargo>().Remove(cargo);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<Cargo> GetCargos()
         {
-            throw new NotImplementedException();
+            return _context.Cargos.ToList();
         }
 
         public Cargo GetCargoById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Cargos.Find(id);
         }
 
         public void InsertCargo(Cargo cargo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Cargos.Add(cargo);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void UpdateCargo(Cargo cargo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Entry(cargo).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

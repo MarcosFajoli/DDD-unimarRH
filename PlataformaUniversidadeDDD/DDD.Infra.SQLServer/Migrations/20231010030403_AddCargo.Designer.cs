@@ -4,6 +4,7 @@ using DDD.Infra.SQLServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20231010030403_AddCargo")]
+    partial class AddCargo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasKey("CargoId");
 
-                    b.ToTable("Cargos", (string)null);
+                    b.ToTable("Cargos");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
@@ -71,7 +74,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasIndex("PesquisadorUserId");
 
-                    b.ToTable("Projetos", (string)null);
+                    b.ToTable("Projetos");
                 });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Disciplina", b =>
@@ -97,7 +100,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasKey("DisciplinaId");
 
-                    b.ToTable("Disciplinas", (string)null);
+                    b.ToTable("Disciplinas");
                 });
 
             modelBuilder.Entity("DDD.Domain.SecretariaContext.Matricula", b =>
@@ -123,7 +126,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasIndex("DisciplinaId");
 
-                    b.ToTable("Matriculas", (string)null);
+                    b.ToTable("Matriculas");
                 });
 
             modelBuilder.Entity("DDD.Domain.UserManagementContext.User", b =>
@@ -192,7 +195,7 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.HasIndex("CargoId");
 
-                    b.ToTable("Funcionarios", (string)null);
+                    b.ToTable("Funcionarios");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>
