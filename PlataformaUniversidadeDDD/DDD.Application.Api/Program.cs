@@ -13,7 +13,8 @@ builder.Services.AddScoped<IAlunoRepository, AlunoRepositorySqlServer>();
 builder.Services.AddScoped<IDisciplinaRepository, DisciplinaRepositorySqlServer>();
 builder.Services.AddScoped<IMatriculaRepository, MatriculaRepositorySqlServer>();
 builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepositorySqlServer>();
-builder.Services.AddScoped<ICargoRepository, CargoRepositorySqlServer>();
+builder.Services.AddScoped<IAtribuicaoRepository, AtribuicaoRepositorySqlServer>();
+builder.Services.AddScoped<IFuncaoRepository, FuncaoRepositorySqlServer>();
 
 builder.Services.AddScoped<SqlContext, SqlContext>();
 

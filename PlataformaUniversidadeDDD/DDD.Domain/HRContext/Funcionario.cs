@@ -13,7 +13,6 @@ namespace DDD.Domain.HRContext
         public decimal Salario { get; set; }
         public bool FeriasPendentes { get; set; }
         public int MinutosExtras { get; set; }
-        public int ?CargoId { get; set; }
-        public Cargo ?Cargo { get; set; }
+        public IList<Atribuicao>? Atribuicoes { get; set; }
     }
 }

@@ -9,20 +9,21 @@ using System.Threading.Tasks;
 
 namespace DDD.Infra.SQLServer.Repositories
 {
-    public class CargoRepositorySqlServer : ICargoRepository
+    public class AtribuicaoRepositorySqlServer : IAtribuicaoRepository
     {
         private readonly SqlContext _context;
 
-        public CargoRepositorySqlServer(SqlContext context)
+        public AtribuicaoRepositorySqlServer(SqlContext context)
         {
             _context = context;
         }
 
-        public void DeleteCargo(Cargo cargo)
+        public void DeleteAtribuicao(Atribuicao atribuicao
+ )
         {
             try
             {
-                _context.Set<Cargo>().Remove(cargo);
+                _context.Set<Atribuicao>().Remove(atribuicao);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -31,21 +32,21 @@ namespace DDD.Infra.SQLServer.Repositories
             }
         }
 
-        public List<Cargo> GetCargos()
+        public List<Atribuicao> GetAtribuicoes()
         {
-            return _context.Cargos.ToList();
+            return _context.Atribuicoes.ToList();
         }
 
-        public Cargo GetCargoById(int id)
+        public Atribuicao GetAtribuicaoById(int id)
         {
-            return _context.Cargos.Find(id);
+            return _context.Atribuicoes.Find(id);
         }
 
-        public void InsertCargo(Cargo cargo)
+        public void InsertAtribuicao(Atribuicao atribuicao)
         {
             try
             {
-                _context.Cargos.Add(cargo);
+                _context.Atribuicoes.Add(atribuicao);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -54,11 +55,11 @@ namespace DDD.Infra.SQLServer.Repositories
             }
         }
 
-        public void UpdateCargo(Cargo cargo)
+        public void UpdateAtribuicao(Atribuicao atribuicao)
         {
             try
             {
-                _context.Entry(cargo).State = EntityState.Modified;
+                _context.Entry(atribuicao).State = EntityState.Modified;
                 _context.SaveChanges();
             }
             catch (Exception ex)

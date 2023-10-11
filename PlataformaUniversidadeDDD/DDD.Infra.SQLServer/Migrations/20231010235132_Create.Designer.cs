@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20230927185039_matriculaPkUnica")]
-    partial class matriculaPkUnica
+    [Migration("20231010235132_Create")]
+    partial class Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,56 @@ namespace DDD.Infra.SQLServer.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.HasSequence("UserSequence");
+
+            modelBuilder.Entity("DDD.Domain.HRContext.Atribuicao", b =>
+                {
+                    b.Property<int>("AtribuicaoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AtribuicaoId"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AtribuicaoId");
+
+                    b.ToTable("Atribuicoes");
+                });
+
+            modelBuilder.Entity("DDD.Domain.HRContext.Funcao", b =>
+                {
+                    b.Property<int>("FuncaoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FuncaoId"));
+
+                    b.Property<int>("AtribuicaoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FuncionarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FuncaoId");
+
+                    b.HasIndex("AtribuicaoId");
+
+                    b.HasIndex("FuncionarioId");
+
+                    b.ToTable("Funcoes");
+                });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
                 {
@@ -123,6 +173,9 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DataNasc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -150,6 +203,28 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.UseTpcMappingStrategy();
                 });
 
+            modelBuilder.Entity("DDD.Domain.HRContext.Funcionario", b =>
+                {
+                    b.HasBaseType("DDD.Domain.UserManagementContext.User");
+
+                    b.Property<int?>("AtribuicaoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataAdmissao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("FeriasPendentes")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MinutosExtras")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Salario")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("Funcionarios");
+                });
+
             modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>
                 {
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
@@ -166,6 +241,25 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
 
                     b.ToTable("Aluno", (string)null);
+                });
+
+            modelBuilder.Entity("DDD.Domain.HRContext.Funcao", b =>
+                {
+                    b.HasOne("DDD.Domain.HRContext.Atribuicao", "Atribuicao")
+                        .WithMany()
+                        .HasForeignKey("AtribuicaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDD.Domain.HRContext.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("FuncionarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Atribuicao");
+
+                    b.Navigation("Funcionario");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>

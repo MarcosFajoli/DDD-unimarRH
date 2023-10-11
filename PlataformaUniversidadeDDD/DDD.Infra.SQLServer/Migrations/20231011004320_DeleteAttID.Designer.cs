@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDD.Infra.SQLServer.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20231009001536_FuncionarioTable")]
-    partial class FuncionarioTable
+    [Migration("20231011004320_DeleteAttID")]
+    partial class DeleteAttID
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,13 @@ namespace DDD.Infra.SQLServer.Migrations
 
             modelBuilder.HasSequence("UserSequence");
 
-            modelBuilder.Entity("DDD.Domain.HRContext.Cargo", b =>
+            modelBuilder.Entity("DDD.Domain.HRContext.Atribuicao", b =>
                 {
-                    b.Property<int>("CargoId")
+                    b.Property<int>("AtribuicaoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CargoId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AtribuicaoId"));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -43,9 +43,38 @@ namespace DDD.Infra.SQLServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CargoId");
+                    b.HasKey("AtribuicaoId");
 
-                    b.ToTable("Cargo");
+                    b.ToTable("Atribuicoes");
+                });
+
+            modelBuilder.Entity("DDD.Domain.HRContext.Funcao", b =>
+                {
+                    b.Property<int>("FuncaoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FuncaoId"));
+
+                    b.Property<int>("AtribuicaoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FuncionarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FuncaoId");
+
+                    b.HasIndex("AtribuicaoId");
+
+                    b.HasIndex("FuncionarioId");
+
+                    b.ToTable("Funcoes");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
@@ -178,9 +207,6 @@ namespace DDD.Infra.SQLServer.Migrations
                 {
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
 
-                    b.Property<int>("CargoId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DataAdmissao")
                         .HasColumnType("datetime2");
 
@@ -192,8 +218,6 @@ namespace DDD.Infra.SQLServer.Migrations
 
                     b.Property<decimal>("Salario")
                         .HasColumnType("decimal(18,2)");
-
-                    b.HasIndex("CargoId");
 
                     b.ToTable("Funcionarios");
                 });
@@ -214,6 +238,25 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.HasBaseType("DDD.Domain.UserManagementContext.User");
 
                     b.ToTable("Aluno", (string)null);
+                });
+
+            modelBuilder.Entity("DDD.Domain.HRContext.Funcao", b =>
+                {
+                    b.HasOne("DDD.Domain.HRContext.Atribuicao", "Atribuicao")
+                        .WithMany()
+                        .HasForeignKey("AtribuicaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDD.Domain.HRContext.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("FuncionarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Atribuicao");
+
+                    b.Navigation("Funcionario");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Projeto", b =>
@@ -240,17 +283,6 @@ namespace DDD.Infra.SQLServer.Migrations
                     b.Navigation("Aluno");
 
                     b.Navigation("Disciplina");
-                });
-
-            modelBuilder.Entity("DDD.Domain.HRContext.Funcionario", b =>
-                {
-                    b.HasOne("DDD.Domain.HRContext.Cargo", "Cargo")
-                        .WithMany()
-                        .HasForeignKey("CargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cargo");
                 });
 
             modelBuilder.Entity("DDD.Domain.PicContext.Pesquisador", b =>

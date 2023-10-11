@@ -25,16 +25,14 @@ namespace DDD.Infra.SQLServer
                 .WithMany(e => e.Alunos)
                 .UsingEntity<Matricula>();
 
-
+            modelBuilder.Entity<Funcionario>()
+                .HasMany(e => e.Atribuicoes)
+                .WithMany(e => e.Funcionarios)
+                .UsingEntity<Funcao>();
 
             modelBuilder.Entity<User>().UseTpcMappingStrategy();
             modelBuilder.Entity<Aluno>().ToTable("Aluno");
             modelBuilder.Entity<Pesquisador>().ToTable("Pesquisador");
-
-            modelBuilder.Entity<Funcionario>()
-                .HasOne(e => e.Cargo)
-                .WithMany(e => e.Funcionarios)
-                .HasForeignKey(e => e.CargoId);
             //https://learn.microsoft.com/pt-br/ef/core/modeling/inheritance
         }
 
@@ -44,7 +42,8 @@ namespace DDD.Infra.SQLServer
         public DbSet<User> Users { get; set; }
         public DbSet<Pesquisador> Pesquisadores { get; set; }
         public DbSet<Projeto> Projetos { get; set; }
-        public DbSet<Funcionario> Funcionarios { get; set; } 
-        public DbSet<Cargo> Cargos { get; set; }
+        public DbSet<Funcionario> Funcionarios { get; set; }
+        public DbSet<Atribuicao> Atribuicoes { get; set; }
+        public DbSet<Funcao> Funcoes { get; set; }
     }
 }
